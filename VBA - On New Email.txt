@@ -1,28 +1,58 @@
-Sub FrequencyNewEmail()
-    Dim Msg As Outlook.MailItem
-    Dim MessageInfo
-    Dim Result
-    If TypeName(Item) = "MailItem" Then
-        MessageInfo = "" & _
-            "Sender : " & Item.SenderEmailAddress & vbCrLf & _
-            "Sent : " & Item.SentOn & vbCrLf & _
-            "Received : " & Item.ReceivedTime & vbCrLf & _
-            "Subject : " & Item.Subject & vbCrLf & _
-            "Size : " & Item.Size & vbCrLf & _
-            "Message Body : " & vbCrLf & Item.Body
-        'Result = MsgBox(MessageInfo, vbOKOnly, "New Message Received")
-        Debug.Print "Hello"
-        Debug.Print Item.Subject
-      
-        Dim ExApp As Excel.Application
-        Dim ExWbk As Workbook
-        Set ExApp = New Excel.Application
-        Set ExWbk = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\SendBulkEmail.xlsm")
-        ExApp.Visible = True
-        MsgBox "opening Excel"
-        MsgBox TypeName(Item.Body)
-        ExWbk.Application.Run "Module1.SendResponse1(Item.Body & "")"
-        
-     ExWbk.Close SaveChanges:=True
-    End If
+Private Sub inboxItems_ItemAdd(ByVal Item As Object)
+On Error GoTo ErrorHandler
+
+Dim Msg As Outlook.MailItem
+Dim MessageInfo
+Dim Result
+MsgBox "New Email Arraived"
+If TypeName(Item) = "MailItem" Then
+    MessageInfo = "" & _
+        "Sender : " & Item.SenderEmailAddress & vbCrLf & _
+        "Sent : " & Item.SentOn & vbCrLf & _
+        "Received : " & Item.ReceivedTime & vbCrLf & _
+        "Subject : " & Item.Subject & vbCrLf & _
+        "Size : " & Item.Size & vbCrLf & _
+        "Message Body : " & vbCrLf & Item.Body
+    'Result = MsgBox(MessageInfo, vbOKOnly, "New Message Received")
+    Debug.Print "Hello"
+    Debug.Print Item.Subject
+  
+    Dim ExApp As Excel.Application
+    Dim ExWbk1, ExWbk2, ExWbk3 As Workbook
+    Set ExApp = New Excel.Application
+    ExApp.Visible = True
+    
+    'Start - Generate CCD extract
+    MsgBox "Do you want to open"
+    Set ExWbk2 = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\DF_DeMinimis_Extract (01012023-12312023).xlsm")
+    MsgBox "Opening CCD"
+    ExWbk2.Application.Run "CopyAndTrimSpecialEntity.CopyAndTrimSpecialEntity"
+    MsgBox "Saving File"
+    ExWbk2.Close SaveChanges:=True
+    'End
+    
+    'Start - Generate K2
+    MsgBox "Do you want to open"
+    Set ExWbk3 = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\K2 and Portal Data Summary_Jan 1 2022 - Dec 31 2023.xlsm")
+    MsgBox "K2 Module 1"
+    ExWbk3.Application.Run "Module1.CCDExtractCSV"
+    MsgBox "K2 Module 2"
+    ExWbk3.Application.Run "Module2.CFCTE"
+    ExWbk3.Close SaveChanges:=True
+    'End
+    
+    'Start - Send Test email response
+    Set ExWbk1 = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\SendBulkEmail.xlsm")
+    MsgBox "opening SendEmail"
+    ExWbk1.Application.Run "Module1.SendResponse1", Item.Body, Item.SenderEmailAddress
+    ExWbk1.Close SaveChanges:=True
+    'End -
+End If
+
+ExitNewItem:
+    Exit Sub
+
+ErrorHandler:
+    MsgBox Err.Number & " - " & Err.Description
+    Resume ExitNewItem
 End Sub
