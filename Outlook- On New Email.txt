@@ -1,3 +1,16 @@
+Option Explicit
+Private WithEvents inboxItems As Outlook.Items
+
+Private Sub Application_Startup()
+    MsgBox "Initiating New Email Event Litsener"
+  Dim outlookApp As Outlook.Application
+  Dim objectNS As Outlook.NameSpace
+  
+  Set outlookApp = Outlook.Application
+  Set objectNS = outlookApp.GetNamespace("MAPI")
+  Set inboxItems = objectNS.GetDefaultFolder(olFolderInbox).Items
+End Sub
+
 Private Sub inboxItems_ItemAdd(ByVal Item As Object)
 On Error GoTo ErrorHandler
 
@@ -41,7 +54,7 @@ If TypeName(Item) = "MailItem" Then
     ExWbk3.Close SaveChanges:=True
     'End
     
-    'Start - Send Test email response
+    'Start - Send email response
     Set ExWbk1 = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\SendBulkEmail.xlsm")
     MsgBox "opening SendEmail"
     ExWbk1.Application.Run "Module1.SendResponse1", Item.Body, Item.SenderEmailAddress
@@ -56,3 +69,4 @@ ErrorHandler:
     MsgBox Err.Number & " - " & Err.Description
     Resume ExitNewItem
 End Sub
+
