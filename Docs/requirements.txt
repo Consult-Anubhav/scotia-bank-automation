@@ -1,8 +1,0 @@
-1) list of element's Xpath on which uri, to be clicked or extracted
-2) sample of legal markup & sbsdr word file.
-3) Condition. "Once all emails received create folder" - after for that particular month? or after entire system batch jobs gets completed?
-4) sample, In calculations, samples of calculation sheets with results.
-5) sample, Which data need to be updates on portal onboarding sheet?
-6) sample, "Change data in k2 extract from CFTC extract" which data to be replaced?
-7) sample / reference of design for email template to be build.
-8) sample for reminder on 3rd day with no response with repeat frequency.
