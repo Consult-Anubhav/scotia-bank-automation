@@ -36,13 +36,7 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
     DisplayWindowsNotification "New Email", "Checking Email"
     
     If TypeName(Item) = "MailItem" And Item.Subject Like "*Scotia Report - *" Then
-    
-        '--- Calculations ---
-        
-            'Start - Store email as pdf
-                EmailToPDF Item, outputDir
-            'End
-        
+
         '--- Latam ---
         
         '--- OPICS ---
@@ -57,13 +51,16 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
         
         '--- Mutex ---
         
-        'Start - Generate CCD Extract
-            'GenerateCCDExtract
-        'End
+            'Start - Generate CCD Extract
+                'GenerateCCDExtract
+            'End
         
-        'Start - Send response email
-            'TestEmail
-        'End
+        '--- Calculations ---
+        
+            'Start - Store email as pdf
+                EmailToPDF Item, outputDir
+            'End
+            
     Else
         DisplayWindowsNotification "Ignored", "irrelative email"
     End If

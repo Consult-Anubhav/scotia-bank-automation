@@ -1,4 +1,4 @@
-Attribute VB_Name = "VarGlobal"
+Attribute VB_Name = "testAlias"
 Function getRootPath() As String
     getRootPath = "C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\~Scotia-Bank-Root"
 End Function
@@ -19,3 +19,14 @@ Function getPreviousMonth() As String
     getPreviousMonth = "Dec"
 End Function
 
+'--- Latam ---
+        
+'--- OPICS ---
+
+'--- SCOTS ---
+
+'--- K2 ---
+
+'--- Mutex ---
+
+'--- Calculations ---
