@@ -15,14 +15,14 @@ Attribute VB_Name = "Emails"
 Public Sub EmailToPDF(Item As Outlook.MailItem, outputPath As String)
     On Error GoTo ErrorHandler
     
-    Dim FSO As New FileSystemObject
+    Dim fso As New FileSystemObject
     
     'Save email as MIME HTML Archive file
     Dim tempFilePath, tempFileName As String
     tempFilePath = Environ("temp") & "\Scotia\Calculations\"
     
     'create directory if not exists
-    If Not FSO.FolderExists(tempFilePath) Then
+    If Not fso.FolderExists(tempFilePath) Then
         FSOCreateFolder2 CStr(tempFilePath)
     End If
           
@@ -41,7 +41,7 @@ Public Sub EmailToPDF(Item As Outlook.MailItem, outputPath As String)
     tempFilePath = outputPath & "\Calculations\"
     
     'create directory if not exists
-    If Not FSO.FolderExists(tempFilePath) Then
+    If Not fso.FolderExists(tempFilePath) Then
         FSOCreateFolder2 CStr(tempFilePath)
     End If
           

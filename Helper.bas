@@ -18,13 +18,34 @@ End Sub
 
 Public Function FSOCreateFolder2(strPath As String) As Boolean
     
-    Static FSO As New FileSystemObject
+    Static fso As New FileSystemObject
     
-    If Not FSO.FolderExists(FSO.GetParentFolderName(strPath)) Then
+    If Not fso.FolderExists(fso.GetParentFolderName(strPath)) Then
         'walk back up until you find one that exists
-        FSOCreateFolder2 FSO.GetParentFolderName(strPath)
+        FSOCreateFolder2 fso.GetParentFolderName(strPath)
     End If
     
-    FSO.CreateFolder strPath
+    fso.CreateFolder strPath
     
 End Function
+
+Public Function GetTimeStamp() As String
+    GetTimeStamp = Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss")
+End Function
+
+Sub ZipAllFilesInFolder(zippedFileFullName, folderToZipPath)
+    Dim ShellApp As Object
+    Set ShellApp = CreateObject("Shell.Application")
+  
+    'Create an empty zip file
+    Open zippedFileFullName For Output As #1
+    Print #1, Chr$(80) & Chr$(75) & Chr$(5) & Chr$(6) & String(18, 0)
+    Close #1
+    
+    'Copy the files & folders into the zip file
+    'ShellApp.NameSpace(zippedFileFullName).CopyHere ShellApp.NameSpace(folderToZipPath).Items 'copies only items within folder
+    ShellApp.NameSpace(zippedFileFullName).CopyHere folderToZipPath 'copies folder and its contents
+     
+    Set ShellApp = Nothing
+
+End Sub

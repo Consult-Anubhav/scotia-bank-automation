@@ -61,6 +61,10 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
                 EmailToPDF Item, outputDir
             'End
             
+            'Start - Compress final reports
+                ZipAllFilesInFolder outputDir & "Calculations " & Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss") & ".zip", outputDir & "\Calculations"
+            'End
+            
     Else
         DisplayWindowsNotification "Ignored", "irrelative email"
     End If

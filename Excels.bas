@@ -9,6 +9,8 @@ Attribute VB_Name = "Excels"
 '--- K2 ---
 
 Public Sub GenerateK2Extract()
+    On Error GoTo ErrorHandler
+    
     Dim ExApp As Excel.Application
     Dim ExWbk As Workbook
     
@@ -29,6 +31,14 @@ Public Sub GenerateK2Extract()
     
     DisplayWindowsNotification "K2 Extract", "Saving File"
     ExWbk.Close SaveChanges:=True
+    
+ExitSub:
+    Exit Sub
+    
+ErrorHandler:
+    DisplayWindowsNotification "Error", "GenerateK2Extract failed"
+    DisplayWindowsNotification Err.Number, Err.Description
+    Resume ExitSub
 End Sub
 
 '--- Mutex ---
