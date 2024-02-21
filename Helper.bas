@@ -61,7 +61,7 @@ End Function
 ' GetPreviousMonthYear
 Public Function GetPreviousMonthYear(emailMonthYear As String) As String
     Dim ItemStr As String
-    ItemStr = CDate(emailMonthYear)
+    ItemStr = CDate("1 " & emailMonthYear)
     GetPreviousMonthYear = Format(DateAdd("M", -1, ItemStr), "MMM YY")
 End Function
 
@@ -96,3 +96,5 @@ Sub ZipAllFilesInFolder(zippedFileFullName, folderToZipPath)
     Set ShellApp = Nothing
 
 End Sub
+
+

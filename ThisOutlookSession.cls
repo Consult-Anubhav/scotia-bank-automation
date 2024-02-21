@@ -33,20 +33,22 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
         emailMonth, previousMonth As String
         
     'Assign Variables
-    emailMonthYear = GetEmailMonthYear
-    previousMonthYear = GetPreviousMonthYear
-    emailYear = GetEmailYear(emailMonthYear)
-    previousYear = GetPreviousYear(emailMonthYear)
-    emailMonth = GetEmailMonth(emailMonthYear)
-    previousMonth = GetPreviousMonth(emailMonthYear)
-    inputDir = getRootPath & "\" & emailYear & "\" & emailMonth
-    outputDir = getRootPath & "\" & previousYear & "\" & previousMonth
+    'Assign Variables
+    emailMonthYear = GetEmailMonthYear("Re: Scotia Report - Dec 2023")
+    previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
+    emailYear = GetEmailYear(emailMonthYear & "")
+    previousYear = GetPreviousYear(emailMonthYear & "")
+    emailMonth = GetEmailMonth(emailMonthYear & "")
+    previousMonth = GetPreviousMonth(emailMonthYear & "")
+    outputDir = getRootPath & "\" & emailYear & "\" & emailMonth
+    inputDir = getRootPath & "\" & previousYear & "\" & previousMonth
     
     DisplayWindowsNotification "New Email", "Checking Email"
     
     If TypeName(Item) = "MailItem" And Item.Subject Like getEmailSubject Then
         
         '--- Initiate directory template ---
+        
             ' Download all attachments to output directory
             
             ' copy report templates from input directory
@@ -60,7 +62,7 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
         '--- K2 ---
         
             'Start - Generate K2 Extract
-                'GenerateK2Extract
+                GenerateK2Extract outputDir & ""
             'End
         
         '--- Mutex ---

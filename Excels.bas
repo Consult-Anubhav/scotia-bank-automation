@@ -8,23 +8,38 @@ Attribute VB_Name = "Excels"
 
 '--- K2 ---
 
-Public Sub GenerateK2Extract()
-    On Error GoTo ErrorHandler
+Public Sub Test()
+    Dim inputDir, outputDir, emailMonthYear, previousMonthYear, emailYear, previousYear, emailMonth, previousMonth As String
+        
+    'Assign Variables
+    emailMonthYear = GetEmailMonthYear("Re: Scotia Report - Dec 2023")
+    previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
+    emailYear = GetEmailYear(emailMonthYear & "")
+    previousYear = GetPreviousYear(emailMonthYear & "")
+    emailMonth = GetEmailMonth(emailMonthYear & "")
+    previousMonth = GetPreviousMonth(emailMonthYear & "")
+    outputDir = getRootPath & "\" & emailYear & "\" & emailMonth
+    inputDir = getRootPath & "\" & previousYear & "\" & previousMonth
+    GenerateK2Extract outputDir & ""
+End Sub
+
+Public Sub GenerateK2Extract(dirPath As String)
+    'On Error GoTo ErrorHandler
     
-    Dim ExApp As Excel.Application
-    Dim ExWbk As Workbook
+    'Dim ExApp As Excel.Application
+    'Dim ExWbk As Workbook
     
-    Set ExApp = New Excel.Application
+    'Set ExApp = New Excel.Application
     
-    ExApp.AskToUpdateLinks = False
-    ExApp.DisplayAlerts = False
-    ExApp.Visible = True
+    'ExApp.AskToUpdateLinks = False
+    'ExApp.DisplayAlerts = False
+    'ExApp.Visible = False
     
-    DisplayWindowsNotification "K2 Extract", "Opening excel"
-    Set ExWbk = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\K2 and Portal Data Summary_Jan 1 2022 - Dec 31 2023.xlsm")
+    'DisplayWindowsNotification "K2 Extract", "Opening excel"
+    'Set ExWbk = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\K2 and Portal Data Summary_Jan 1 2022 - Dec 31 2023.xlsm")
     
-    DisplayWindowsNotification "K2 Extract", "CCDExtractCSV"
-    ExWbk.Application.Run "Module1.CCDExtractCSV"
+    'DisplayWindowsNotification "K2 Extract", "CCDExtractCSV"
+    'ExWbk.Application.Run "Module1.CCDExtractCSV"
     
     '--- CCDExtractCSV ---
     
@@ -35,10 +50,11 @@ Public Sub GenerateK2Extract()
     
     ' Change the file name and path accordingly
     csvFileName = "CCD Extract.csv"
-    csvFilePath = ThisWorkbook.Path & "\" & csvFileName
-    
+    MsgBox dirPath
+    csvFilePath = dirPath & "\Supporting Files K2 and Murex\K2\" & csvFileName
+    MsgBox csvFilePath
     ' Open the CSV file
-    Workbooks.OpenText FileName:=csvFilePath, DataType:=xlDelimited, comma:=True
+    Workbook.OpenText FileName:=csvFilePath, DataType:=xlDelimited, comma:=True
     
     ' Reference to CCD Extract sheet
     Set wsCCD = ThisWorkbook.Sheets("CCD Extract")
@@ -56,14 +72,14 @@ Public Sub GenerateK2Extract()
     
     '--- CCDExtractCSV ---
     
-    DisplayWindowsNotification "K2 Extract", "CFCTE"
-    ExWbk.Application.Run "Module2.CFCTE"
+    'DisplayWindowsNotification "K2 Extract", "CFCTE"
+    'ExWbk.Application.Run "Module2.CFCTE"
     
     '--- CFCTExtractCSV ---
     
     
-    Dim csvFileName As String
-    Dim csvFilePath As String
+    'Dim csvFileName As String
+    'Dim csvFilePath As String
     Dim wsK2 As Worksheet
     Dim lastRow As Long
     
@@ -127,8 +143,8 @@ Public Sub GenerateK2Extract()
     
     '--- --- CFCTExtractCSV ---
     
-    DisplayWindowsNotification "K2 Extract", "Saving File"
-    ExWbk.Close SaveChanges:=True
+    'DisplayWindowsNotification "K2 Extract", "Saving File"
+    'ExWbk.Close SaveChanges:=True
     
 ExitSub:
     Exit Sub
@@ -142,23 +158,85 @@ End Sub
 '--- Mutex ---
 
 Public Sub GenerateCCDExtract()
-    Dim ExApp As Excel.Application
-    Dim ExWbk As Workbook
+    'Dim ExApp As Excel.Application
+    'Dim ExWbk As Workbook
     
-    Set ExApp = New Excel.Application
+    'Set ExApp = New Excel.Application
     
-    ExApp.AskToUpdateLinks = False
-    ExApp.DisplayAlerts = False
-    ExApp.Visible = True
+    'ExApp.AskToUpdateLinks = False
+    'ExApp.DisplayAlerts = False
+    'ExApp.Visible = False
     
-    DisplayWindowsNotification "CCD Extract", "Opening excel"
-    Set ExWbk = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\DF_DeMinimis_Extract (01012023-12312023).xlsm")
+    'DisplayWindowsNotification "CCD Extract", "Opening excel"
+    'Set ExWbk = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\DF_DeMinimis_Extract (01012023-12312023).xlsm")
     
-    DisplayWindowsNotification "CCD Extract", "CopyAndTrimSpecialEntity"
-    ExWbk.Application.Run "CopyAndTrimSpecialEntity.CopyAndTrimSpecialEntity"
+    'DisplayWindowsNotification "CCD Extract", "CopyAndTrimSpecialEntity"
+    'ExWbk.Application.Run "CopyAndTrimSpecialEntity.CopyAndTrimSpecialEntity"
     
-    DisplayWindowsNotification "CCD Extract", "Saving File"
-    ExWbk.Close SaveChanges:=True
+    
+    '--- --- CCD Extract ---
+    
+    
+    Dim ccdWs As Worksheet
+    Dim dfWs As Worksheet
+    Dim ccdLastRow As Long
+    Dim dfLastRow As Long
+    Dim i As Long
+    
+    ' Disable screen updating and automatic calculations
+    DisplayWindowsNotification "DeMinimis", "Disable screen updating"
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+    
+    ' Set worksheets
+    DisplayWindowsNotification "DeMinimis", "opening CCD Extract"
+    Set ccdWs = Workbooks.Open(ActiveWorkbook.Path & "\Docs\Supporting Files K2 and Murex\K2\CCD Extract.csv").Sheets(1)
+    Set dfWs = ThisWorkbook.Sheets("Murex_EM_DF_attributes")
+    
+    ' Find the last row in CCD Extract.csv
+    ccdLastRow = ccdWs.Cells(ccdWs.Rows.Count, "Y").End(xlUp).Row
+    
+    ' Find the last row in DF_DeMinimis_Extract
+    dfLastRow = dfWs.Cells(dfWs.Rows.Count, "Q").End(xlUp).Row
+    
+    ' Force the entire column to be in the desired format
+    dfWs.Columns("Q:Q").NumberFormat = "@"
+    
+    DisplayWindowsNotification "DeMinimis", "copying CCD Extract to DF_DeMinimis_Extract"
+    ' Copy "Special Entity" from CCD Extract.csv to DF_DeMinimis_Extract
+    For i = 2 To ccdLastRow ' Assuming the headers are in the first row
+        ' Copy the value
+        dfWs.Cells(i, "Q").Value = ccdWs.Cells(i, "Y").Value
+        
+        ' Trim the column Q after 15 spaces and store in R, T, and U columns
+        Dim specialEntity As String
+        specialEntity = dfWs.Cells(i, "Q").Value
+        
+        ' Trim after 15 spaces
+        Dim trimmedValue As String
+        trimmedValue = Trim(Mid(specialEntity, 1, 15))
+        
+        ' Store in R, T, and U columns
+        dfWs.Cells(i, "R").Value = trimmedValue
+        dfWs.Cells(i, "T").Value = trimmedValue
+        dfWs.Cells(i, "U").Value = trimmedValue
+    Next i
+    
+    DisplayWindowsNotification "DeMinimis", "Special Entity copied"
+    
+    ' Enable screen updating and automatic calculations
+    Application.ScreenUpdating = True
+    Application.Calculation = xlCalculationAutomatic
+    DisplayWindowsNotification "DeMinimis", "Enable screen updating"
+    Workbooks.Close
+    'MsgBox "Special Entity copied and trimmed successfully!", vbInformation
+    
+    
+    '--- --- CCD Extract ---
+    
+    
+    'DisplayWindowsNotification "CCD Extract", "Saving File"
+    'ExWbk.Close SaveChanges:=True
 End Sub
 
 '--- Calculations ---

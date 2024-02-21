@@ -60,8 +60,7 @@ ExitSub:
         Exit Sub
 
 ErrorHandler:
-    DisplayWindowsNotification "Error", "Email to PDF failed"
-    DisplayWindowsNotification Err.Number, Err.Description
+    DisplayWindowsNotification "Error - " & Err.Number, "Email to PDF failed - " & Err.Description
     Resume ExitSub
 End Sub
 
