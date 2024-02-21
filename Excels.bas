@@ -26,54 +26,64 @@ End Sub
 Public Sub GenerateK2Extract(dirPath As String)
     'On Error GoTo ErrorHandler
     
-    'Dim ExApp As Excel.Application
-    'Dim ExWbk As Workbook
+    Dim RootPath As String
+    Dim ExApp As Excel.Application
+    Dim ExWbkReport, ExWbkCSV As Workbook
     
-    'Set ExApp = New Excel.Application
-    
-    'ExApp.AskToUpdateLinks = False
-    'ExApp.DisplayAlerts = False
-    'ExApp.Visible = False
-    
-    'DisplayWindowsNotification "K2 Extract", "Opening excel"
-    'Set ExWbk = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\K2 and Portal Data Summary_Jan 1 2022 - Dec 31 2023.xlsm")
-    
-    'DisplayWindowsNotification "K2 Extract", "CCDExtractCSV"
-    'ExWbk.Application.Run "Module1.CCDExtractCSV"
-    
-    '--- CCDExtractCSV ---
-    
-    Dim csvFileName As String
-    Dim csvFilePath As String
+    Dim FileName As String
+    Dim FilePath As String
     Dim wsCCD As Worksheet
     Dim csvDataRange As Range
     
+    RootPath = dirPath & "\Supporting Files K2 and Murex\K2\"
+    Set ExApp = New Excel.Application
+    
+    ExApp.AskToUpdateLinks = False
+    ExApp.DisplayAlerts = False
+    ExApp.Visible = True
+    
+    DisplayWindowsNotification "K2 Extract", "Opening Report"
+    
+    FileName = "K2 and Portal Data Summary_Jan 1 2022 - Dec 31 2023.xlsx"
+    FilePath = RootPath & FileName
+    Set ExWbkReport = ExApp.Workbooks.Open(FilePath)
+    'ExWbk.Application.Run "Module1.CCDExtractCSV"
+    
+    
+    '--- CCDExtractCSV ---
+    
+    
     ' Change the file name and path accordingly
-    csvFileName = "CCD Extract.csv"
-    MsgBox dirPath
-    csvFilePath = dirPath & "\Supporting Files K2 and Murex\K2\" & csvFileName
-    MsgBox csvFilePath
+    FileName = "CCD Extract.csv"
+    FilePath = RootPath & FileName
     ' Open the CSV file
-    Workbook.OpenText FileName:=csvFilePath, DataType:=xlDelimited, comma:=True
+    'Workbook.OpenText FileName:=csvFilePath, DataType:=xlDelimited, comma:=True
+    
+    DisplayWindowsNotification "K2 CCD Extract", "Opening CSV"
+    Set ExWbkCSV = ExApp.Workbooks.Open(FilePath)
     
     ' Reference to CCD Extract sheet
-    Set wsCCD = ThisWorkbook.Sheets("CCD Extract")
+    Set wsCCD = ExWbkCSV.Sheets("CCD Extract")
     
     ' Set the data range in the CSV file
-    With Workbooks(csvFileName).Sheets(1)
+    With ExWbkReport.Sheets("CCD Extract")
         Set csvDataRange = .UsedRange
     End With
     
+    DisplayWindowsNotification "K2 CCD Extract", "copying data"
     ' Copy data from CSV to CCD Extract sheet
     csvDataRange.Copy wsCCD.Range("A1")
     
     ' Close the CSV file without saving changes
-    Workbooks(csvFileName).Close SaveChanges:=False
+    'Workbooks(csvFileName).Close SaveChanges:=False
+    DisplayWindowsNotification "K2 CCDExtract", "Closing CSV"
+    ExWbkCSV.Close 'SaveChanges:=True
+    
     
     '--- CCDExtractCSV ---
     
-    'DisplayWindowsNotification "K2 Extract", "CFCTE"
     'ExWbk.Application.Run "Module2.CFCTE"
+    
     
     '--- CFCTExtractCSV ---
     
@@ -84,17 +94,21 @@ Public Sub GenerateK2Extract(dirPath As String)
     Dim lastRow As Long
     
     ' Change the file name and path accordingly
-    csvFileName = "CFTCExtract_2023_12_28.csv"
-    csvFilePath = ThisWorkbook.Path & "\" & csvFileName
+    FileName = "CFTCExtract_2023_12_28.csv"
+    FilePath = RootPath & FileName
     
     ' Open the CSV file
-    Workbooks.OpenText FileName:=csvFilePath, DataType:=xlDelimited, comma:=True
+    'Workbooks.OpenText FileName:=csvFilePath, DataType:=xlDelimited, comma:=True
+    
+    DisplayWindowsNotification "K2 CFCTE Extract", "Opening CSV"
+    Set ExWbkCSV = ExApp.Workbooks.Open(FilePath)
     
     ' Reference to K2 Extract sheet
-    Set wsK2 = ThisWorkbook.Sheets("K2 Extract")
+    Set wsK2 = ExWbkCSV.Sheets("CFTCExtract_2023_12_28")
     
     ' Copy data from CSV to K2 Extract sheet
-    With Workbooks(csvFileName).Sheets(1)
+    DisplayWindowsNotification "K2 CFCT Extract", "Copying data"
+    With ExWbkReport.Sheets("K2 Extract")
         ' Find the last row in column A of CSV file
         lastRow = .Cells(.Rows.Count, "A").End(xlUp).Row
         
@@ -138,13 +152,17 @@ Public Sub GenerateK2Extract(dirPath As String)
     End With
     
     ' Close the CSV file without saving changes
-    Workbooks(csvFileName).Close SaveChanges:=False
+    'Workbooks(csvFileName).Close SaveChanges:=False
+    DisplayWindowsNotification "K2 CFCTE Extract", "Closing CSV"
+    ExWbkCSV.Close 'SaveChanges:=True
+    
+    DisplayWindowsNotification "K2 Extract", "Saving Report"
+    ExWbkReport.Close SaveChanges:=True
+    ExApp.Quit
     
     
     '--- --- CFCTExtractCSV ---
     
-    'DisplayWindowsNotification "K2 Extract", "Saving File"
-    'ExWbk.Close SaveChanges:=True
     
 ExitSub:
     Exit Sub
@@ -157,7 +175,7 @@ End Sub
 
 '--- Mutex ---
 
-Public Sub GenerateCCDExtract()
+Public Sub GenerateMutexExtract()
     'Dim ExApp As Excel.Application
     'Dim ExWbk As Workbook
     

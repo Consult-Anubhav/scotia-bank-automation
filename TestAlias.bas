@@ -4,7 +4,7 @@ Function getEmailSubject() As String
 End Function
 
 Function getRootPath() As String
-    getRootPath = "C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\~Scotia-Bank-Root"
+    getRootPath = "C:\wamp64\www\~Consult Anubhav Projects\Scotia Bank\~Scotia-Bank-Root"
 End Function
 
 'Function getCurrentYear() As String

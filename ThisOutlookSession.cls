@@ -68,7 +68,7 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
         '--- Mutex ---
         
             'Start - Generate CCD Extract
-                'GenerateCCDExtract
+                'GenerateMutexExtract
             'End
         
         '--- Calculations ---
