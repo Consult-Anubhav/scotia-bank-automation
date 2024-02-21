@@ -8,21 +8,6 @@ Attribute VB_Name = "Excels"
 
 '--- K2 ---
 
-Public Sub Test()
-    Dim inputDir, outputDir, emailMonthYear, previousMonthYear, emailYear, previousYear, emailMonth, previousMonth As String
-        
-    'Assign Variables
-    emailMonthYear = GetEmailMonthYear("Re: Scotia Report - Dec 2023")
-    previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
-    emailYear = GetEmailYear(emailMonthYear & "")
-    previousYear = GetPreviousYear(emailMonthYear & "")
-    emailMonth = GetEmailMonth(emailMonthYear & "")
-    previousMonth = GetPreviousMonth(emailMonthYear & "")
-    outputDir = getRootPath & "\" & emailYear & "\" & emailMonth
-    inputDir = getRootPath & "\" & previousYear & "\" & previousMonth
-    GenerateK2Extract outputDir & ""
-End Sub
-
 Public Sub GenerateK2Extract(dirPath As String)
     'On Error GoTo ErrorHandler
     
@@ -175,15 +160,41 @@ End Sub
 
 '--- Mutex ---
 
-Public Sub GenerateMutexExtract()
-    'Dim ExApp As Excel.Application
+Public Sub Test()
+    Dim inputDir, outputDir, emailMonthYear, previousMonthYear, emailYear, previousYear, emailMonth, previousMonth As String
+        
+    'Assign Variables
+    emailMonthYear = GetEmailMonthYear("Re: Scotia Report - Dec 2023")
+    previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
+    emailYear = GetEmailYear(emailMonthYear & "")
+    previousYear = GetPreviousYear(emailMonthYear & "")
+    emailMonth = GetEmailMonth(emailMonthYear & "")
+    previousMonth = GetPreviousMonth(emailMonthYear & "")
+    outputDir = getRootPath & "\" & emailYear & "\" & emailMonth
+    inputDir = getRootPath & "\" & previousYear & "\" & previousMonth
+    'Test K2
+    'GenerateK2Extract outputDir & ""
+    'Test Murex
+    GenerateMutexExtract outputDir & ""
+End Sub
+
+Public Sub GenerateMutexExtract(dirPath As String)
+    Dim ExApp As Excel.Application
     'Dim ExWbk As Workbook
+    Dim ReportPath, CSVPath As String
     
-    'Set ExApp = New Excel.Application
+    Set ExApp = New Excel.Application
+    Dim ExWbkReport, ExWbkCSV As Workbook
     
-    'ExApp.AskToUpdateLinks = False
-    'ExApp.DisplayAlerts = False
-    'ExApp.Visible = False
+    Dim FileName As String
+    Dim FilePath As String
+    
+    ReportPath = dirPath & "\Supporting Files K2 and Murex\Murex\"
+    CSVPath = dirPath & "\Supporting Files K2 and Murex\K2\"
+    
+    ExApp.AskToUpdateLinks = False
+    ExApp.DisplayAlerts = False
+    ExApp.Visible = True
     
     'DisplayWindowsNotification "CCD Extract", "Opening excel"
     'Set ExWbk = ExApp.Workbooks.Open("C:\wamp64\www\~Consult Anubhav Projects\scotia-bank-automation\DF_DeMinimis_Extract (01012023-12312023).xlsm")
@@ -201,15 +212,24 @@ Public Sub GenerateMutexExtract()
     Dim dfLastRow As Long
     Dim i As Long
     
+    DisplayWindowsNotification "Murex", "Opening Report"
+    FileName = "DF_DeMinimis_Extract (01012023-12312023).xlsx"
+    FilePath = ReportPath & FileName
+    Set ExWbkReport = ExApp.Workbooks.Open(FilePath)
+    
     ' Disable screen updating and automatic calculations
-    DisplayWindowsNotification "DeMinimis", "Disable screen updating"
-    Application.ScreenUpdating = False
-    Application.Calculation = xlCalculationManual
+    'DisplayWindowsNotification "DeMinimis", "Disable screen updating"
+    ExApp.Application.ScreenUpdating = False
+    'ExApp.Application.Calculation = xlCalculationManual
     
     ' Set worksheets
-    DisplayWindowsNotification "DeMinimis", "opening CCD Extract"
-    Set ccdWs = Workbooks.Open(ActiveWorkbook.Path & "\Docs\Supporting Files K2 and Murex\K2\CCD Extract.csv").Sheets(1)
-    Set dfWs = ThisWorkbook.Sheets("Murex_EM_DF_attributes")
+    DisplayWindowsNotification "Murex CCD Extract", "Opening CSV"
+    
+    FileName = "CCD Extract.csv"
+    FilePath = CSVPath & FileName
+    Set ExWbkCSV = Workbooks.Open(FilePath)
+    Set ccdWs = ExWbkCSV.Sheets("CCD Extract")
+    Set dfWs = ExWbkReport.Sheets("Murex_EM_DF_attributes")
     
     ' Find the last row in CCD Extract.csv
     ccdLastRow = ccdWs.Cells(ccdWs.Rows.Count, "Y").End(xlUp).Row
@@ -220,7 +240,7 @@ Public Sub GenerateMutexExtract()
     ' Force the entire column to be in the desired format
     dfWs.Columns("Q:Q").NumberFormat = "@"
     
-    DisplayWindowsNotification "DeMinimis", "copying CCD Extract to DF_DeMinimis_Extract"
+    DisplayWindowsNotification "Murex CCD Extract", "Copying data"
     ' Copy "Special Entity" from CCD Extract.csv to DF_DeMinimis_Extract
     For i = 2 To ccdLastRow ' Assuming the headers are in the first row
         ' Copy the value
@@ -240,15 +260,16 @@ Public Sub GenerateMutexExtract()
         dfWs.Cells(i, "U").Value = trimmedValue
     Next i
     
-    DisplayWindowsNotification "DeMinimis", "Special Entity copied"
+    DisplayWindowsNotification "Murex CCD Extract", "Special Entity copied"
     
     ' Enable screen updating and automatic calculations
-    Application.ScreenUpdating = True
-    Application.Calculation = xlCalculationAutomatic
-    DisplayWindowsNotification "DeMinimis", "Enable screen updating"
-    Workbooks.Close
+    ExApp.Application.ScreenUpdating = True
+    'Application.Calculation = xlCalculationAutomatic
+    DisplayWindowsNotification "Murex CCD Extract", "Enable screen updating"
+    ExWbkCSV.Close 'Workbooks.Close
     'MsgBox "Special Entity copied and trimmed successfully!", vbInformation
-    
+    ExWbkReport.Close SaveChanges:=True
+    ExApp.Quit
     
     '--- --- CCD Extract ---
     
