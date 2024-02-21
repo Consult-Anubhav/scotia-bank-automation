@@ -1,4 +1,6 @@
 Attribute VB_Name = "Helper"
+
+' Show notifications
 Public Sub DisplayWindowsNotification(Subject As String, Comment As String)
 
     Dim WsShell     As Object: Set WsShell = CreateObject("WScript.Shell")
@@ -16,6 +18,7 @@ Public Sub DisplayWindowsNotification(Subject As String, Comment As String)
 
 End Sub
 
+' Create nested directories
 Public Function FSOCreateFolder2(strPath As String) As Boolean
     
     Static fso As New FileSystemObject
@@ -29,10 +32,54 @@ Public Function FSOCreateFolder2(strPath As String) As Boolean
     
 End Function
 
+' GetTimeStamp
 Public Function GetTimeStamp() As String
     GetTimeStamp = Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss")
 End Function
 
+' GetEmailMonthYear
+Public Function GetEmailMonthYear(ItemSubject As String) As String
+    Dim ItemStr As String
+    ItemStr = Mid(ItemSubject, Len(getEmailSubject), Len(ItemSubject))
+    GetEmailMonthYear = ItemStr
+End Function
+
+' GetEmailYear
+Public Function GetEmailYear(emailMonthYear As String) As String
+    Dim ItemStr As String
+    ItemStr = CDate("1 " & emailMonthYear)
+    GetEmailYear = Format(ItemStr, "YYYY")
+End Function
+
+' GetEmailMonth
+Public Function GetEmailMonth(emailMonthYear As String) As String
+    Dim ItemStr As String
+    ItemStr = CDate("1 " & emailMonthYear)
+    GetEmailMonth = Format(ItemStr, "MMM")
+End Function
+
+' GetPreviousMonthYear
+Public Function GetPreviousMonthYear(emailMonthYear As String) As String
+    Dim ItemStr As String
+    ItemStr = CDate(emailMonthYear)
+    GetPreviousMonthYear = Format(DateAdd("M", -1, ItemStr), "MMM YY")
+End Function
+
+' GetPreviousYear
+Public Function GetPreviousYear(emailMonthYear As String) As String
+    Dim ItemStr As String
+    ItemStr = CDate("1 " & emailMonthYear)
+    GetPreviousYear = Format(DateAdd("M", -1, ItemStr), "YYYY")
+End Function
+
+' GetPreviousMonth
+Public Function GetPreviousMonth(emailMonthYear As String) As String
+    Dim ItemStr As String
+    ItemStr = CDate("1 " & emailMonthYear)
+    GetPreviousMonth = Format(DateAdd("M", -1, ItemStr), "MMM")
+End Function
+
+' Zip Calculations
 Sub ZipAllFilesInFolder(zippedFileFullName, folderToZipPath)
     Dim ShellApp As Object
     Set ShellApp = CreateObject("Shell.Application")

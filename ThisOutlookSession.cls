@@ -27,16 +27,30 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
     On Error GoTo ErrorHandler
     
     'Declare Variables
-    Dim inputDir, outputDir As String
+    Dim inputDir, outputDir, _
+        emailMonthYear, previousMonthYear, _
+        emailYear, previousYear, _
+        emailMonth, previousMonth As String
         
     'Assign Variables
-    inputDir = getRootPath & "\" & getPreviousYear & "\" & getPreviousMonth
-    outputDir = getRootPath & "\" & getCurrentYear & "\" & getCurrentMonth
+    emailMonthYear = GetEmailMonthYear
+    previousMonthYear = GetPreviousMonthYear
+    emailYear = GetEmailYear(emailMonthYear)
+    previousYear = GetPreviousYear(emailMonthYear)
+    emailMonth = GetEmailMonth(emailMonthYear)
+    previousMonth = GetPreviousMonth(emailMonthYear)
+    inputDir = getRootPath & "\" & emailYear & "\" & emailMonth
+    outputDir = getRootPath & "\" & previousYear & "\" & previousMonth
     
     DisplayWindowsNotification "New Email", "Checking Email"
     
-    If TypeName(Item) = "MailItem" And Item.Subject Like "*Scotia Report - *" Then
-
+    If TypeName(Item) = "MailItem" And Item.Subject Like getEmailSubject Then
+        
+        '--- Initiate directory template ---
+            ' Download all attachments to output directory
+            
+            ' copy report templates from input directory
+            
         '--- Latam ---
         
         '--- OPICS ---
