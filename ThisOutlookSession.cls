@@ -81,11 +81,11 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
         '--- Calculations ---
         
             'Start - Store email as pdf
-                EmailToPDF Item, outputDir
+                EmailToPDF Item, outputDir & ""
             'End
             
             'Start - Compress final reports
-                ZipAllFilesInFolder outputDir & "\Calculations " & Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss") & ".zip", outputDir & "\Calculations"
+                ZipAllFilesInFolder outputDir & "\Calculations " & Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss") & ".zip", outputDir & ""
             'End
             
     Else
