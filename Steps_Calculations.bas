@@ -1,16 +1,8 @@
-Attribute VB_Name = "Emails"
+Attribute VB_Name = "Steps_Calculations"
 
-'--- Latam ---
-        
-'--- OPICS ---
-
-'--- SCOTS ---
-
-'--- K2 ---
-
-'--- Mutex ---
 
 '--- Calculations ---
+
 
 Public Sub EmailToPDF(Item As Outlook.MailItem, outputPath As String)
     On Error GoTo ErrorHandler
@@ -63,4 +55,5 @@ ErrorHandler:
     DisplayWindowsNotification "Error - " & Err.Number, "Email to PDF failed - " & Err.Description
     Resume ExitSub
 End Sub
+
 

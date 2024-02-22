@@ -1,4 +1,4 @@
-Attribute VB_Name = "testAlias"
+Attribute VB_Name = "Faker"
 Function getEmailSubject() As String
     getEmailSubject = "Re: Scotia Report - *"
 End Function

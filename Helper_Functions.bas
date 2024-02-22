@@ -1,4 +1,4 @@
-Attribute VB_Name = "Helper"
+Attribute VB_Name = "Helper_Functions"
 
 ' Show notifications
 Public Sub DisplayWindowsNotification(Subject As String, Comment As String)
@@ -96,5 +96,3 @@ Sub ZipAllFilesInFolder(zippedFileFullName, folderToZipPath)
     Set ShellApp = Nothing
 
 End Sub
-
-
