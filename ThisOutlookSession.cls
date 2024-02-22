@@ -23,33 +23,40 @@ Private Sub Application_Startup()
     Set inboxItems = objectNS.GetDefaultFolder(olFolderInbox).Items
 End Sub
 
+'Public Sub Application_ItemSend()
+
+'End Sub
+
+
 Private Sub inboxItems_ItemAdd(ByVal Item As Object)
     On Error GoTo ErrorHandler
-    
-    'Declare Variables
-    Dim inputDir, outputDir, _
-        emailMonthYear, previousMonthYear, _
-        emailYear, previousYear, _
-        emailMonth, previousMonth As String
-        
-    'Assign Variables
-    'Assign Variables
-    emailMonthYear = GetEmailMonthYear("Re: Scotia Report - Dec 2023")
-    previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
-    emailYear = GetEmailYear(emailMonthYear & "")
-    previousYear = GetPreviousYear(emailMonthYear & "")
-    emailMonth = GetEmailMonth(emailMonthYear & "")
-    previousMonth = GetPreviousMonth(emailMonthYear & "")
-    outputDir = fakeRootPath & "\" & emailYear & "\" & emailMonth
-    inputDir = fakeRootPath & "\" & previousYear & "\" & previousMonth
     
     DisplayWindowsNotification "New Email", "Checking Email"
     
     If TypeName(Item) = "MailItem" And Item.Subject Like fakeEmailSubject Then
+    
+        'Declare Variables
+        
+        Dim inputDir, outputDir, _
+            emailMonthYear, previousMonthYear, _
+            emailYear, previousYear, _
+            emailMonth, previousMonth As String
+            
+        'Assign Variables
+        
+        emailMonthYear = GetEmailMonthYear(Item.Subject)
+        previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
+        emailYear = GetEmailYear(emailMonthYear & "")
+        previousYear = GetPreviousYear(emailMonthYear & "")
+        emailMonth = GetEmailMonth(emailMonthYear & "")
+        previousMonth = GetPreviousMonth(emailMonthYear & "")
+        outputDir = fakeRootPath & "\" & emailYear & "\" & emailMonth
+        inputDir = fakeRootPath & "\" & previousYear & "\" & previousMonth
         
         '--- Initiate directory template ---
         
             ' Download all attachments to output directory
+            DownloadEmailAttachments Item, outputDir & ""
             
             ' copy report templates from input directory
             
@@ -62,7 +69,7 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
         '--- K2 ---
         
             'Start - Generate K2 Extract
-                GenerateK2Extract outputDir & ""
+                'GenerateK2Extract outputDir & ""
             'End
         
         '--- Mutex ---
@@ -78,7 +85,7 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
             'End
             
             'Start - Compress final reports
-                ZipAllFilesInFolder outputDir & "Calculations " & Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss") & ".zip", outputDir & "\Calculations"
+                ZipAllFilesInFolder outputDir & "\Calculations " & Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss") & ".zip", outputDir & "\Calculations"
             'End
             
     Else
