@@ -10,8 +10,8 @@ Public Sub Test()
     previousYear = GetPreviousYear(emailMonthYear & "")
     emailMonth = GetEmailMonth(emailMonthYear & "")
     previousMonth = GetPreviousMonth(emailMonthYear & "")
-    outputDir = getRootPath & "\" & emailYear & "\" & emailMonth
-    inputDir = getRootPath & "\" & previousYear & "\" & previousMonth
+    outputDir = fakeRootPath & "\" & emailYear & "\" & emailMonth
+    inputDir = fakeRootPath & "\" & previousYear & "\" & previousMonth
     'Test K2
     'GenerateK2Extract outputDir & ""
     'Test Murex

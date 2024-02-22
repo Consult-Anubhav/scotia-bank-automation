@@ -1,10 +1,10 @@
 Attribute VB_Name = "Faker"
-Function getEmailSubject() As String
-    getEmailSubject = "Re: Scotia Report - *"
+Function fakeEmailSubject() As String
+    fakeEmailSubject = "Re: Scotia Report - *"
 End Function
 
-Function getRootPath() As String
-    getRootPath = "C:\wamp64\www\~Consult Anubhav Projects\Scotia Bank\~Scotia-Bank-Root"
+Function fakeRootPath() As String
+    fakeRootPath = "C:\wamp64\www\~Consult Anubhav Projects\Scotia Bank\~Scotia-Bank-Root"
 End Function
 
 'Function getCurrentYear() As String

@@ -40,12 +40,12 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
     previousYear = GetPreviousYear(emailMonthYear & "")
     emailMonth = GetEmailMonth(emailMonthYear & "")
     previousMonth = GetPreviousMonth(emailMonthYear & "")
-    outputDir = getRootPath & "\" & emailYear & "\" & emailMonth
-    inputDir = getRootPath & "\" & previousYear & "\" & previousMonth
+    outputDir = fakeRootPath & "\" & emailYear & "\" & emailMonth
+    inputDir = fakeRootPath & "\" & previousYear & "\" & previousMonth
     
     DisplayWindowsNotification "New Email", "Checking Email"
     
-    If TypeName(Item) = "MailItem" And Item.Subject Like getEmailSubject Then
+    If TypeName(Item) = "MailItem" And Item.Subject Like fakeEmailSubject Then
         
         '--- Initiate directory template ---
         

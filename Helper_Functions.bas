@@ -40,7 +40,7 @@ End Function
 ' GetEmailMonthYear
 Public Function GetEmailMonthYear(ItemSubject As String) As String
     Dim ItemStr As String
-    ItemStr = Mid(ItemSubject, Len(getEmailSubject), Len(ItemSubject))
+    ItemStr = Mid(ItemSubject, Len(fakeEmailSubject), Len(ItemSubject))
     GetEmailMonthYear = ItemStr
 End Function
 
