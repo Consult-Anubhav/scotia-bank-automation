@@ -44,6 +44,7 @@ Public Sub DownloadEmailAttachments(Item As Object, attachPath As String)
        
             'Case "XLSX", "XLSM", "CSV", "XLS"
                 
+            'K2
             Case olAttachment.FileName Like "bookingpoint*"
                 dirPath = attachPath & "\" & fakeK2Path
               
@@ -53,9 +54,11 @@ Public Sub DownloadEmailAttachments(Item As Object, attachPath As String)
             Case olAttachment.FileName Like "CFTCExtract*"
                 dirPath = attachPath & "\" & fakeK2Path
                 
+            'OPICS
             Case olAttachment.FileName Like "FX (FORWARDS*"
                 dirPath = attachPath & "\" & fakeOPICSPath
                 
+            'LATAM
             Case olAttachment.FileName Like "Cartera Fwd*"
                 dirPath = attachPath & "\" & fakeLATAMCFTCPath
                 
@@ -85,11 +88,31 @@ Public Sub DownloadEmailAttachments(Item As Object, attachPath As String)
                 
        End Select
        
-       olAttachment.SaveAsFile dirPath & "\" & fso.GetBaseName(olAttachment.FileName) & GetTimeStamp & fso.GetExtensionName(olAttachment.FileName)
+       olAttachment.SaveAsFile dirPath & "\" & fso.GetBaseName(olAttachment.FileName) & GetTimeStamp & "." & fso.GetExtensionName(olAttachment.FileName)
 
     Next olAttachment
 End Sub
 
-Public Sub CopyPreviousReports(inputDir As String)
+Public Sub CopyPreviousReports(inputDir As String, outputDir As String)
+    
+    Dim fso As Object
+    Set fso = VBA.CreateObject("Scripting.FileSystemObject")
+    
+    DisplayWindowsNotification "Previous Reports", "Copying"
+    
+    'LATAM
+    Call fso.CopyFile(inputDir & "", outputDir & "")  'outputDir[, overwrite]
+    
+    'OPICS
+    Call fso.CopyFile(inputDir & "", outputDir & "")
+    
+    'SCOTS
+    Call fso.CopyFile(inputDir & "", outputDir & "")
+    
+    'K2
+    Call fso.CopyFile(inputDir & "", outputDir & "")
+    
+    'Murex
+    Call fso.CopyFile(inputDir & "", outputDir & "")
     
 End Sub

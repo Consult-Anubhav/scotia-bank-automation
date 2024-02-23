@@ -59,6 +59,7 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
             DownloadEmailAttachments Item, outputDir & ""
             
             ' copy report templates from input directory
+            CopyPreviousReport inputDir & "", outputDir & ""
             
         '--- Latam ---
         
@@ -85,7 +86,7 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
             'End
             
             'Start - Compress final reports
-                ZipAllFilesInFolder outputDir & "\Calculations " & Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss") & ".zip", outputDir & ""
+                'ZipAllFilesInFolder outputDir & "\Calculations " & Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss") & ".zip", outputDir & ""
             'End
             
     Else
