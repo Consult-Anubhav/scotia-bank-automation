@@ -54,7 +54,9 @@ Public Sub EmailToPDF(Item As Object, outputPath As String)
         
         'Delete MHT file
         'Kill tempFileName
-    
+                
+        'ZipAllFilesInFolder outputPath & "\Calculations " & Format(CStr(Now), "yyyy-mm-dd_hh.mm.ss") & ".zip", outputPath & ""
+        
     End If
     
 ExitSub:
