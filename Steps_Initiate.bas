@@ -5,7 +5,6 @@ Public Sub DownloadEmailAttachments(Item As Object, attachPath As String)
     Dim fso As Object
     Set fso = CreateObject("Scripting.FileSystemObject")
     
-    
     Dim i As Integer
     i = 1
     
@@ -93,26 +92,58 @@ Public Sub DownloadEmailAttachments(Item As Object, attachPath As String)
     Next olAttachment
 End Sub
 
+Public Sub TestCopy()
+    CopyPreviousReports "C:\wamp64\www\~Consult Anubhav Projects\Scotia Bank\~Scotia-Bank-Root\2024\Jan", "C:\wamp64\www\~Consult Anubhav Projects\Scotia Bank\~Scotia-Bank-Root\2024\Feb"
+End Sub
+
+
 Public Sub CopyPreviousReports(inputDir As String, outputDir As String)
     
     Dim fso As Object
+    Dim inLink, outLink As String
     Set fso = VBA.CreateObject("Scripting.FileSystemObject")
     
     DisplayWindowsNotification "Previous Reports", "Copying"
     
     'LATAM
-    Call fso.CopyFile(inputDir & "", outputDir & "")  'outputDir[, overwrite]
+    inLink = "\Latam De Minimis Calculation\SupportdataforMINIMIS Report Jan 1, 2023 to Dec 31, 2023.xlsx"
+    outLink = "\Latam De Minimis Calculation\"
+    
+    If Not fso.FolderExists(outputDir & outLink) Then
+        FSOCreateFolder2 (outputDir & outLink)
+    End If
+    Call fso.CopyFile(inputDir & inLink, outputDir & outLink)  'outputDir[, overwrite]
     
     'OPICS
-    Call fso.CopyFile(inputDir & "", outputDir & "")
+    inLink = "\OPICS Scotia Investments Jamaica Limited\FX (FORWARDS).prn.xlsx"
+    outLink = "\OPICS Scotia Investments Jamaica Limited\"
+    
+    If Not fso.FolderExists(outputDir & outLink) Then
+        FSOCreateFolder2 (outputDir & outLink)
+    End If
+    Call fso.CopyFile(inputDir & inLink, outputDir & outLink)
     
     'SCOTS
-    Call fso.CopyFile(inputDir & "", outputDir & "")
+    inLink = ""
+    outLink = ""
+    'Call fso.CopyFile(inputDir & inLink, outputDir & outLink)
     
     'K2
-    Call fso.CopyFile(inputDir & "", outputDir & "")
+    inLink = "\Supporting Files K2 and Murex\K2\K2 and Portal Data Summary_Jan 1 2022 - Dec 31 2023.xlsx"
+    outLink = "\Supporting Files K2 and Murex\K2\"
+    
+    If Not fso.FolderExists(outputDir & outLink) Then
+        FSOCreateFolder2 (outputDir & outLink)
+    End If
+    Call fso.CopyFile(inputDir & inLink, outputDir & outLink)
     
     'Murex
-    Call fso.CopyFile(inputDir & "", outputDir & "")
+    inLink = "\Supporting Files K2 and Murex\Murex\DF_DeMinimis_Extract (01012023-12312023).xlsx"
+    outLink = "\Supporting Files K2 and Murex\Murex\"
+    
+    If Not fso.FolderExists(outputDir & outLink) Then
+        FSOCreateFolder2 (outputDir & outLink)
+    End If
+    Call fso.CopyFile(inputDir & inLink, outputDir & outLink)
     
 End Sub
