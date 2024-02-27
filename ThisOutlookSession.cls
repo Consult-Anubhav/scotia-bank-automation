@@ -70,13 +70,13 @@ Private Sub inboxItems_ItemAdd(ByVal Item As Object)
         '--- K2 ---
         
             'Start - Generate K2 Extract
-                'GenerateK2Extract outputDir & ""
+                GenerateK2Extract outputDir & ""
             'End
         
         '--- Mutex ---
         
             'Start - Generate CCD Extract
-                'GenerateMutexExtract
+                GenerateMutexExtract outputDir & ""
             'End
         
         '--- Calculations ---

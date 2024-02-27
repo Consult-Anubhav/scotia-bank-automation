@@ -1,6 +1,6 @@
 Attribute VB_Name = "Steps_Murex"
 
-Public Sub Test()
+Public Sub TestMurex()
     Dim inputDir, outputDir, emailMonthYear, previousMonthYear, emailYear, previousYear, emailMonth, previousMonth As String
         
     'Assign Variables

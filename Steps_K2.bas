@@ -1,5 +1,23 @@
 Attribute VB_Name = "Steps_K2"
 
+Public Sub TestK2()
+    Dim inputDir, outputDir, emailMonthYear, previousMonthYear, emailYear, previousYear, emailMonth, previousMonth As String
+        
+    'Assign Variables
+    emailMonthYear = GetEmailMonthYear("Re: Scotia Report - Dec 2023")
+    previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
+    emailYear = GetEmailYear(emailMonthYear & "")
+    previousYear = GetPreviousYear(emailMonthYear & "")
+    emailMonth = GetEmailMonth(emailMonthYear & "")
+    previousMonth = GetPreviousMonth(emailMonthYear & "")
+    outputDir = fakeRootPath & "\" & emailYear & "\" & emailMonth
+    inputDir = fakeRootPath & "\" & previousYear & "\" & previousMonth
+    'Test K2
+    GenerateK2Extract outputDir & ""
+    'Test Murex
+    'GenerateMutexExtract outputDir & ""
+End Sub
+
 '--- K2 ---
 
 Public Sub GenerateK2Extract(dirPath As String)
