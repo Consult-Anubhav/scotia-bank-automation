@@ -1,0 +1,7 @@
+Visual Basic For Applications
+OLE Automation
+Microsft Scripting Runtime
+Microsoft Outlook 16.0 Object Library
+Microsoft Office 16.0 Object Library
+Microsoft Excel 16.0 Object Library
+Microsoft Word 16.0 Object Library
