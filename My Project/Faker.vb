@@ -1,10 +1,13 @@
 ﻿Module Faker
-    Private FakeRootPath
+    Private FakeRootPath = ""
     Public Function FakeEmailSubject() As String
         Return "* Scotia Report - *"
     End Function
 
     Public Function GetFakeRootPath() As String
+        If FakeRootPath.Equals("") Then
+            Return "C:\Users\yash\Downloads\scotia-bank-automation\~Scotia-Bank-Root\2024\Jan"
+        End If
         Return FakeRootPath
 
     End Function

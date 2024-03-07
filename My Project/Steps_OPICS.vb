@@ -24,7 +24,7 @@ Module Steps_OPICS
             fileData = File.ReadAllText(localFilePath)
 
             ' Show message indicating the use of the local CSV file
-            MsgBox("Using the local CSV file.")
+            UpdateLabel("Using the local CSV file.", "")
 
             ' Open the Excel file to which data will be appended
             Dim excelApp As New Excel.Application
@@ -59,9 +59,9 @@ Module Steps_OPICS
             wb.Close()
 
             ' Display a message indicating successful processing
-            MsgBox("CSV file processed successfully!")
+            UpdateLabel("CSV file processed successfully!", "")
         Else
-            MsgBox("Local CSV file not found. Process cannot continue.")
+            UpdateLabel("Local CSV file not found. Process cannot continue.", "")
         End If
     End Sub
 

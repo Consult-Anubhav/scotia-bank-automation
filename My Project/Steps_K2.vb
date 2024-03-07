@@ -39,7 +39,7 @@ Module Steps_K2
             ExApp.DisplayAlerts = False
             ExApp.Visible = True
 
-            DisplayWindowsNotification("K2 Extract", "Opening Report")
+            UpdateLabel("K2 Extract", "Opening Report")
 
             FileName = "K2 and Portal Data Summary_Jan 1 2022 - Dec 31 2023.xlsx"
             FilePath = RootPath & FileName
@@ -51,7 +51,7 @@ Module Steps_K2
             FileName = "CCD Extract.csv"
             FilePath = RootPath & FileName
 
-            DisplayWindowsNotification("K2 CCD Extract", "Opening CSV")
+            UpdateLabel("K2 CCD Extract", "Opening CSV")
             ExWbkCSV = ExApp.Workbooks.Open(FilePath)
 
             ' Reference to CCD Extract sheet
@@ -60,12 +60,12 @@ Module Steps_K2
             ' Set the data range in the CSV file
             csvDataRange = ExWbkReport.Sheets("CCD Extract").UsedRange
 
-            DisplayWindowsNotification("K2 CCD Extract", "Copying data")
+            UpdateLabel("K2 CCD Extract", "Copying data")
             ' Copy data from CSV to CCD Extract sheet
             csvDataRange.Copy(wsCCD.Range("A1"))
 
             ' Close the CSV file without saving changes
-            DisplayWindowsNotification("K2 CCDExtract", "Closing CSV")
+            UpdateLabel("K2 CCDExtract", "Closing CSV")
             ExWbkCSV.Close()
 
             '--- --- CFCTExtractCSV ---
@@ -85,7 +85,7 @@ Module Steps_K2
             wsK2 = ExWbkCSV.Sheets("CFTCExtract_2023_12_28")
 
             ' Copy data from CSV to K2 Extract sheet
-            DisplayWindowsNotification("K2 CFCT Extract", "Copying data")
+            UpdateLabel("K2 CFCT Extract", "Copying data")
             lastRow = wsK2.Cells(wsK2.Rows.Count, "A").End(XlDirection.xlUp).Row
 
             ' Find the last row in column A of CSV file
@@ -94,23 +94,23 @@ Module Steps_K2
             End With
 
             ' Close the CSV file without saving changes
-            DisplayWindowsNotification("K2 CFCTE Extract", "Closing CSV")
+            UpdateLabel("K2 CFCTE Extract", "Closing CSV")
             ExWbkCSV.Close(False)
 
             ' Close the Excel application
-            DisplayWindowsNotification("K2 Extract", "Saving Report")
+            UpdateLabel("K2 Extract", "Saving Report")
             ExWbkReport.Close(True)
             ExApp.Quit()
 
 
             ' Close the Excel application
-            DisplayWindowsNotification("K2 Extract", "Saving Report")
+            UpdateLabel("K2 Extract", "Saving Report")
             ExWbkReport.Close(True)
             ExApp.Quit()
 
         Catch ex As Exception
-            DisplayWindowsNotification("Error", "GenerateK2Extract failed")
-            DisplayWindowsNotification(ex.HResult.ToString(), ex.Message)
+            UpdateLabel("Error", "GenerateK2Extract failed")
+            UpdateLabel(ex.HResult.ToString(), ex.Message)
         End Try
     End Sub
 

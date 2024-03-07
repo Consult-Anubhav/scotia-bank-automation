@@ -54,7 +54,7 @@ Module Steps_Murex
         Dim dfLastRow As Long
         Dim i As Long
 
-        DisplayWindowsNotification("Murex", "Opening Report")
+        UpdateLabel("Murex", "Opening Report")
         FileName = "DF_DeMinimis_Extract (01012023-12312023).xlsx"
         FilePath = Path.Combine(ReportPath, FileName)
         ExWbkReport = ExApp.Workbooks.Open(FilePath)
@@ -63,7 +63,7 @@ Module Steps_Murex
         ExApp.Application.ScreenUpdating = False
 
         ' Set worksheets
-        DisplayWindowsNotification("Murex CCD Extract", "Opening CSV")
+        UpdateLabel("Murex CCD Extract", "Opening CSV")
 
         FileName = "CCD Extract.csv"
         FilePath = Path.Combine(CSVPath, FileName)
@@ -80,7 +80,7 @@ Module Steps_Murex
         ' Force the entire column to be in the desired format
         dfWs.Columns("Q:Q").NumberFormat = "@"
 
-        DisplayWindowsNotification("Murex CCD Extract", "Copying data")
+        UpdateLabel("Murex CCD Extract", "Copying data")
 
         ' Copy "Special Entity" from CCD Extract.csv to DF_DeMinimis_Extract
         For i = 2 To ccdLastRow ' Assuming the headers are in the first row
@@ -99,12 +99,12 @@ Module Steps_Murex
             dfWs.Cells(i, "U").Value = trimmedValue
         Next i
 
-        DisplayWindowsNotification("Murex CCD Extract", "Special Entity copied")
+        UpdateLabel("Murex CCD Extract", "Special Entity copied")
 
         ' Enable screen updating
         ExApp.Application.ScreenUpdating = True
         'Application.Calculation = xlCalculationAutomatic
-        DisplayWindowsNotification("Murex CCD Extract", "Enable screen updating")
+        UpdateLabel("Murex CCD Extract", "Enable screen updating")
         ExWbkCSV.Close(SaveChanges:=False)
         ExWbkReport.Close(SaveChanges:=True)
         ExApp.Quit()

@@ -65,9 +65,9 @@ Module Steps_LATAM
             excelApp.Quit()
             File.Delete(csvFileName)
 
-            MsgBox("Forex data processed successfully.")
+            UpdateLabel("Forex data processed successfully.", "")
         Catch ex As Exception
-            MsgBox("Error downloading file: " & ex.Message)
+            UpdateLabel("Error downloading file: " & ex.Message, "")
         End Try
     End Sub
 

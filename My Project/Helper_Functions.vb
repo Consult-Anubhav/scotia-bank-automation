@@ -11,6 +11,16 @@ Module Helper_Functions
         notify.ShowBalloonTip(10, Subject, Comment, ToolTipIcon.None)
     End Sub
 
+    Public Sub UpdateLabel(subject As String, comment As String)
+        ' Assuming you have a form called Form1 with a label named lblNotification
+        If Form1.rTxtStatus.InvokeRequired Then
+            Form1.rTxtStatus.Invoke(Sub() UpdateLabel(subject, comment))
+        Else
+            ' Update the label text
+            Form1.rTxtStatus.Text = $"Subject: {subject}{Environment.NewLine}Comment: {comment}"
+        End If
+    End Sub
+
     ' Create nested directories
     Public Sub FSOCreateFolder2(strPath As String)
         Dim fso As New DirectoryInfo(strPath)

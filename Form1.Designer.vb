@@ -22,59 +22,104 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.btnK2 = New System.Windows.Forms.Button()
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.btnRootPath = New System.Windows.Forms.Button()
-        Me.FakeRootPathLabel = New System.Windows.Forms.Label()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.btnStart = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.rTxtStatus = New System.Windows.Forms.RichTextBox()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'btnK2
-        '
-        Me.btnK2.Location = New System.Drawing.Point(42, 126)
-        Me.btnK2.Name = "btnK2"
-        Me.btnK2.Size = New System.Drawing.Size(75, 23)
-        Me.btnK2.TabIndex = 0
-        Me.btnK2.Text = "K2"
-        Me.btnK2.UseVisualStyleBackColor = True
-        '
-        'OpenFileDialog1
-        '
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
         'btnRootPath
         '
-        Me.btnRootPath.Location = New System.Drawing.Point(42, 32)
+        Me.btnRootPath.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btnRootPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnRootPath.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRootPath.ForeColor = System.Drawing.Color.White
+        Me.btnRootPath.Location = New System.Drawing.Point(141, 49)
         Me.btnRootPath.Name = "btnRootPath"
-        Me.btnRootPath.Size = New System.Drawing.Size(102, 23)
+        Me.btnRootPath.Size = New System.Drawing.Size(164, 38)
         Me.btnRootPath.TabIndex = 1
-        Me.btnRootPath.Text = "Select RootPath"
-        Me.btnRootPath.UseVisualStyleBackColor = True
+        Me.btnRootPath.Text = "Change RootPath"
+        Me.btnRootPath.UseVisualStyleBackColor = False
         '
-        'FakeRootPathLabel
+        'ComboBox1
         '
-        Me.FakeRootPathLabel.AutoSize = True
-        Me.FakeRootPathLabel.Location = New System.Drawing.Point(150, 41)
-        Me.FakeRootPathLabel.Name = "FakeRootPathLabel"
-        Me.FakeRootPathLabel.Size = New System.Drawing.Size(0, 13)
-        Me.FakeRootPathLabel.TabIndex = 2
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Items.AddRange(New Object() {"K2", "LATAM", "OPICS", "SCOTS", "Murex"})
+        Me.ComboBox1.Location = New System.Drawing.Point(19, 33)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(213, 28)
+        Me.ComboBox1.TabIndex = 3
+        '
+        'btnStart
+        '
+        Me.btnStart.BackColor = System.Drawing.Color.DodgerBlue
+        Me.btnStart.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnStart.Font = New System.Drawing.Font("Calibri", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnStart.ForeColor = System.Drawing.Color.White
+        Me.btnStart.Location = New System.Drawing.Point(19, 77)
+        Me.btnStart.Name = "btnStart"
+        Me.btnStart.Size = New System.Drawing.Size(94, 34)
+        Me.btnStart.TabIndex = 4
+        Me.btnStart.Text = "Start"
+        Me.btnStart.UseVisualStyleBackColor = False
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.ComboBox1)
+        Me.GroupBox1.Controls.Add(Me.btnStart)
+        Me.GroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(141, 128)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(300, 126)
+        Me.GroupBox1.TabIndex = 5
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Calculations"
+        '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 501)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(603, 22)
+        Me.StatusStrip1.TabIndex = 6
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'rTxtStatus
+        '
+        Me.rTxtStatus.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.rTxtStatus.Location = New System.Drawing.Point(141, 339)
+        Me.rTxtStatus.Name = "rTxtStatus"
+        Me.rTxtStatus.Size = New System.Drawing.Size(300, 96)
+        Me.rTxtStatus.TabIndex = 7
+        Me.rTxtStatus.Text = "Status"
         '
         'Form1
         '
+        Me.AllowDrop = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
-        Me.Controls.Add(Me.FakeRootPathLabel)
+        Me.BackColor = System.Drawing.Color.White
+        Me.ClientSize = New System.Drawing.Size(603, 523)
+        Me.Controls.Add(Me.rTxtStatus)
+        Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.btnRootPath)
-        Me.Controls.Add(Me.btnK2)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Text = "Scotia Bank Automation Tool"
+        Me.TopMost = True
+        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents btnK2 As Button
-    Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents btnRootPath As Button
-    Friend WithEvents FakeRootPathLabel As Label
+    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents btnStart As Button
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents StatusStrip1 As StatusStrip
+    Friend WithEvents rTxtStatus As RichTextBox
 End Class
