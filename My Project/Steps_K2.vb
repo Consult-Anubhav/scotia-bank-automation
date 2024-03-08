@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Interop.Excel
+﻿Imports System.Runtime.InteropServices
+Imports Microsoft.Office.Interop.Excel
 Imports Range = Microsoft.Office.Interop.Excel.Range
 
 Module Steps_K2
@@ -7,108 +8,73 @@ Module Steps_K2
         Dim inputDir, outputDir, emailMonthYear, previousMonthYear, emailYear, previousYear, emailMonth, previousMonth As String
 
         'Assign Variables
-        emailMonthYear = GetEmailMonthYear("Re: Scotia Report - Dec 2023")
-        previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
-        emailYear = GetEmailYear(emailMonthYear & "")
-        previousYear = GetPreviousYear(emailMonthYear & "")
-        emailMonth = GetEmailMonth(emailMonthYear & "")
-        previousMonth = GetPreviousMonth(emailMonthYear & "")
-        outputDir = GetFakeRootPath() '& "\" & emailYear & "\" & emailMonth
-        inputDir = GetFakeRootPath() '& "\" & previousYear & "\" & previousMonth
+        'emailMonthYear = GetEmailMonthYear("Re: Scotia Report - Dec 2023")
+        'previousMonthYear = GetPreviousMonthYear(emailMonthYear & "")
+        'emailYear = GetEmailYear(emailMonthYear & "")
+        'previousYear = GetPreviousYear(emailMonthYear & "")
+        'emailMonth = GetEmailMonth(emailMonthYear & "")
+        'previousMonth = GetPreviousMonth(emailMonthYear & "")
+        'outputDir = GetFakeRootPath() & "\" & emailYear & "\" & emailMonth
+        'outputDir = SelectFolder()
+        'inputDir = GetFakeRootPath() '& "\" & previousYear & "\" & previousMonth
         'Test K2
-        GenerateK2Extract(outputDir & "")
+        GenerateK2Extract()
         'Test Murex
         'GenerateMutexExtract(outputDir & "")
     End Sub
 
     '--- K2 ---
-
-    Public Sub GenerateK2Extract(dirPath As String)
+    Public Sub GenerateK2Extract()
         Try
-            Dim RootPath As String
             Dim ExApp As New Microsoft.Office.Interop.Excel.Application
             Dim ExWbkReport, ExWbkCSV As Workbook
             Dim FileName As String
             Dim FilePath As String
-            Dim wsCCD As Worksheet
+            Dim wsCCD, wsK2 As Worksheet
             Dim csvDataRange As Range
 
-            RootPath = dirPath & "\Supporting Files K2 and Murex\K2\"
-
-            ExApp.AskToUpdateLinks = False
+            ' Suppress alerts and make Excel visible
             ExApp.DisplayAlerts = False
             ExApp.Visible = True
 
-            UpdateLabel("K2 Extract", "Opening Report")
-
-            FileName = "K2 and Portal Data Summary_Jan 1 2022 - Dec 31 2023.xlsx"
-            FilePath = RootPath & FileName
+            ' Open the report workbook
+            FileName = SelectFileWithMessage("Open a Report File for K2", "Excel Files (*.xlsx)|*.xlsx")
+            FilePath = FileName
             ExWbkReport = ExApp.Workbooks.Open(FilePath)
 
-            '--- CCDExtractCSV ---
-
-            ' Change the file name and path accordingly
-            FileName = "CCD Extract.csv"
-            FilePath = RootPath & FileName
-
-            UpdateLabel("K2 CCD Extract", "Opening CSV")
+            ' Open the CCDExtract CSV file
+            FileName = SelectFileWithMessage("Open a CCDExtract file", "CSV Files (*.csv)|*.csv")
+            FilePath = FileName
             ExWbkCSV = ExApp.Workbooks.Open(FilePath)
-
-            ' Reference to CCD Extract sheet
             wsCCD = ExWbkCSV.Sheets("CCD Extract")
-
-            ' Set the data range in the CSV file
             csvDataRange = ExWbkReport.Sheets("CCD Extract").UsedRange
-
-            UpdateLabel("K2 CCD Extract", "Copying data")
-            ' Copy data from CSV to CCD Extract sheet
             csvDataRange.Copy(wsCCD.Range("A1"))
-
-            ' Close the CSV file without saving changes
-            UpdateLabel("K2 CCDExtract", "Closing CSV")
             ExWbkCSV.Close()
 
-            '--- --- CFCTExtractCSV ---
-
-            '--- CFCTExtractCSV ---
-            Dim wsK2 As Worksheet
-            Dim lastRow As Long
-
-            ' Change the file name and path accordingly
-            FileName = "CFTCExtract_2023_12_28.csv"
-            FilePath = RootPath & FileName
-
-            ' Open the CSV file
+            ' Open the CFCTExtract CSV file
+            FileName = SelectFileWithMessage("Open a CFCTExtract file", "CSV Files (*.csv)|*.csv")
+            FilePath = FileName
             ExWbkCSV = ExApp.Workbooks.Open(FilePath)
-
-            ' Reference to K2 Extract sheet
             wsK2 = ExWbkCSV.Sheets("CFTCExtract_2023_12_28")
-
-            ' Copy data from CSV to K2 Extract sheet
-            UpdateLabel("K2 CFCT Extract", "Copying data")
-            lastRow = wsK2.Cells(wsK2.Rows.Count, "A").End(XlDirection.xlUp).Row
-
-            ' Find the last row in column A of CSV file
-            With ExWbkReport.Sheets("K2 Extract")
-                .Range("A1:AN" & lastRow).Value = wsK2.Range("A1:AN" & lastRow).Value
-            End With
-
-            ' Close the CSV file without saving changes
-            UpdateLabel("K2 CFCTE Extract", "Closing CSV")
+            wsK2.UsedRange.Copy(ExWbkReport.Sheets("K2 Extract").Range("A1"))
             ExWbkCSV.Close(False)
 
-            ' Close the Excel application
+            ' Display message before saving the report
             UpdateLabel("K2 Extract", "Saving Report")
+
+            ' Save and close the report workbook
             ExWbkReport.Close(True)
             ExApp.Quit()
 
-
-            ' Close the Excel application
-            UpdateLabel("K2 Extract", "Saving Report")
-            ExWbkReport.Close(True)
-            ExApp.Quit()
-
+            ' Release Excel objects
+            Marshal.ReleaseComObject(wsCCD)
+            Marshal.ReleaseComObject(wsK2)
+            Marshal.ReleaseComObject(ExWbkReport)
+            Marshal.ReleaseComObject(ExWbkCSV)
+            Marshal.ReleaseComObject(ExApp)
+            UpdateLabel("K2 Extract", "Complete")
         Catch ex As Exception
+            ' Handle errors
             UpdateLabel("Error", "GenerateK2Extract failed")
             UpdateLabel(ex.HResult.ToString(), ex.Message)
         End Try

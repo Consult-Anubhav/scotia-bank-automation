@@ -1,5 +1,6 @@
 ﻿Module Faker
     Private FakeRootPath = ""
+    Private OutDirPath = ""
     Public Function FakeEmailSubject() As String
         Return "* Scotia Report - *"
     End Function
@@ -16,6 +17,15 @@
         FakeRootPath = path
 
     End Function
+    Public Function SetOutDirPath(path As String)
+        OutDirPath = path
+
+    End Function
+    Public Function GetOutDirPath()
+        Return OutDirPath
+
+    End Function
+
 
     Public Function FakeK2Path() As String
         Return "Supporting Files K2 and Murex\K2"

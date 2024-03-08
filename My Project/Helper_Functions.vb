@@ -70,4 +70,71 @@ Module Helper_Functions
         Dim ItemStr As String = "1 " & emailMonthYear
         Return DateTime.Parse(ItemStr).AddMonths(-1).ToString("MMM")
     End Function
+    Function SelectSingleFile() As String
+        ' Show a file dialog to select a single file
+        Dim fileDialog As New OpenFileDialog()
+
+        ' Set the dialog title and filter if needed
+        fileDialog.Title = "Select File"
+        fileDialog.Filter = "All Files|*.*" ' You can adjust the filter as per your requirements
+
+        If fileDialog.ShowDialog() = DialogResult.OK Then
+            ' Return the selected file path
+            Return fileDialog.FileName
+        Else
+            ' If the user cancels the dialog, return an empty string
+            Return ""
+        End If
+    End Function
+    Function SelectMultipleFiles() As String()
+        ' Show a file dialog to select multiple files
+        Dim fileDialog As New OpenFileDialog()
+        fileDialog.Multiselect = True
+
+        ' Set the dialog title and filter if needed
+        fileDialog.Title = "Select Files"
+        fileDialog.Filter = "All Files|*.*" ' You can adjust the filter as per your requirements
+
+        If fileDialog.ShowDialog() = DialogResult.OK Then
+            ' Return the selected file paths
+            Return fileDialog.FileNames
+        Else
+            ' If the user cancels the dialog, return an empty array
+            Return New String() {}
+        End If
+    End Function
+    Function SelectFolder() As String
+        ' Show a folder browser dialog to select the folder location
+        Dim folderBrowserDialog As New FolderBrowserDialog()
+
+        If folderBrowserDialog.ShowDialog() = DialogResult.OK Then
+            ' Return the selected folder path
+            Return folderBrowserDialog.SelectedPath
+        Else
+            ' If the user cancels the dialog, return an empty string
+            Return ""
+        End If
+    End Function
+    Function SelectFileWithMessage(message As String, filters As String) As String
+        ' Display a message to the user
+        MessageBox.Show(message, "Select File", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+        ' Show a file dialog to select a file
+        Dim fileDialog As New OpenFileDialog()
+
+        ' Set the dialog title
+        fileDialog.Title = "Select File - " & message
+
+        ' Add the specified filters for file types
+        fileDialog.Filter = filters 'e.g.: "Word Documents (*.doc, *.docx)|*.doc;*.docx|PDF Files (*.pdf)|*.pdf|Excel Files (*.xlsx)|*.xlsx|CSV Files (*.csv)|*.csv|All Files (*.*)|*.*"
+
+
+        If fileDialog.ShowDialog() = DialogResult.OK Then
+            ' Return the selected file path
+            Return fileDialog.FileName
+        Else
+            ' If the user cancels the dialog, return an empty string
+            Return ""
+        End If
+    End Function
 End Module
